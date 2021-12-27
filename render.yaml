@@ -69,21 +69,22 @@ services:
 
 envVarGroups:
   - name: app-settings
-    - key: EMAIL_RECIPIENTS
-      sync: false
-    - key: RAILS_MASTER_KEY
-      sync: false
-    - key: RAILS_LOG_TO_STDOUT
-      value: true
-    - key: RAILS_SERVE_STATIC_ASSETS
-      value: true
-    - key: SMTP_ADDRESS
-      sync: false
-    - key: SMTP_DOMAIN
-      sync: false
-    - key: SMTP_PASSWORD
-      sync: false
-    - key: SMTP_USERNAME
-      sync: false
-    - key: SECRET_KEY_BASE
-      generateValue: true
+    envVars:
+      - key: EMAIL_RECIPIENTS
+        sync: false
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: RAILS_LOG_TO_STDOUT
+        value: true
+      - key: RAILS_SERVE_STATIC_ASSETS
+        value: true
+      - key: SMTP_ADDRESS
+        sync: false
+      - key: SMTP_DOMAIN
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SECRET_KEY_BASE
+        generateValue: true
