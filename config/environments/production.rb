@@ -3,6 +3,11 @@ require 'active_support/core_ext/integer/time'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+    if ENV.fetch('IS_PULL_REQUEST') { false }
+      ENV['APPLICATION_HOST'] = ENV['RENDER_INSTANCE_ID'] + '.onrender.com'
+      ENV['ASSET_HOST'] = ENV['RENDER_INSTANCE_ID'] + '.onrender.com'
+    end
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

@@ -5,4 +5,8 @@ set -o errexit
 bundle install
 bundle exec rake assets:precompile
 bundle exec rake assets:clean
-bundle exec rake db:migrate
+
+if [ -n "$DB_MIGRATE" ]
+then
+  bundle exec rake db:migrate
+fi

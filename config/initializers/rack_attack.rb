@@ -5,7 +5,7 @@ class Rack::Attack
       ip_addresses = raw_ip ? raw_ip.strip.split(/[,\s]+/) : []
       proxy_ip = ip_addresses.last
 
-      if !(request.host =~ /heroku/) && ::Rails.application.config.cloudflare.ips.any?{ |proxy| proxy === proxy_ip }
+      if !(request.host =~ /onrender/) && ::Rails.application.config.cloudflare.ips.any?{ |proxy| proxy === proxy_ip }
         false
       else
         ::Rails.logger.warn "Rack Attack IP Filtering: blocked request from #{proxy_ip} to #{request.url}"
