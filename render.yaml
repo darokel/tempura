@@ -1,25 +1,21 @@
+previewsEnabled: true
+previewsExpireAfterDays: 3
+
 databases:
   - name: tempura-db
+    plan: free
     region: frankfurt
 
 services:
   - type: web
     name: tempura-web
     env: ruby
+    initialDeployHook: ./bin/render-preview.sh
     region: frankfurt
+    plan: free
     buildCommand: DB_MIGRATE=true ./bin/render-build.sh
     startCommand: REDIS_URL="redis://${REDIS_HOST}" bundle exec puma -C config/puma.rb
     envVars:
-      - key: ASSET_HOST
-        fromService:
-          name: tempura-web
-          type: web
-          property: host
-      - key: APPLICATION_HOST
-        fromService:
-          name: tempura-web
-          type: web
-          property: host
       - key: DATABASE_URL
         fromDatabase:
           name: tempura-db
@@ -35,20 +31,10 @@ services:
     name: tempura-sidekiq
     env: ruby
     region: frankfurt
-    plan: starter
+    plan: free
     buildCommand: ./bin/render-build.sh
     startCommand: REDIS_URL="redis://${REDIS_HOST}" bundle exec sidekiq -e production
     envVars:
-      - key: ASSET_HOST
-        fromService:
-          name: tempura-web
-          type: web
-          property: host
-      - key: APPLICATION_HOST
-        fromService:
-          name: tempura-web
-          type: web
-          property: host
       - key: DATABASE_URL
         fromDatabase:
           name: tempura-db
@@ -74,8 +60,8 @@ services:
 envVarGroups:
   - name: app-settings
     envVars:
-      - key: EMAIL_RECIPIENTS
-        sync: false
+      - key: BASIC_AUTH_ENABLED
+        value: false
       - key: RAILS_MASTER_KEY
         sync: false
       - key: RAILS_LOG_TO_STDOUT
@@ -83,12 +69,14 @@ envVarGroups:
       - key: RAILS_SERVE_STATIC_ASSETS
         value: true
       - key: SMTP_ADDRESS
-        sync: false
+        value: smtp.sendgrid.net
       - key: SMTP_DOMAIN
         sync: false
       - key: SMTP_PASSWORD
-        sync: false
+        value: password
+        previewValue: password
       - key: SMTP_USERNAME
-        sync: false
+        value: username
+        previewValue: username
       - key: SECRET_KEY_BASE
         generateValue: true
