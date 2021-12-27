@@ -13,10 +13,12 @@ services:
       - key: ASSET_HOST
         fromService:
           name: tempura-web
+          type: web
           property: host
       - key: APPLICATION_HOST
         fromService:
           name: tempura-web
+          type: web
           property: host
       - key: DATABASE_URL
         fromDatabase:
@@ -40,10 +42,12 @@ services:
       - key: ASSET_HOST
         fromService:
           name: tempura-web
+          type: web
           property: host
       - key: APPLICATION_HOST
         fromService:
           name: tempura-web
+          type: web
           property: host
       - key: DATABASE_URL
         fromDatabase:
