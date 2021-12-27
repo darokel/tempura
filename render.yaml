@@ -3,7 +3,6 @@ previewsExpireAfterDays: 3
 
 databases:
   - name: tempura-db
-    plan: free
     region: frankfurt
 
 services:
@@ -12,7 +11,6 @@ services:
     env: ruby
     initialDeployHook: ./bin/render-preview.sh
     region: frankfurt
-    plan: free
     buildCommand: DB_MIGRATE=true ./bin/render-build.sh
     startCommand: REDIS_URL="redis://${REDIS_HOST}" bundle exec puma -C config/puma.rb
     envVars:
@@ -31,7 +29,6 @@ services:
     name: tempura-sidekiq
     env: ruby
     region: frankfurt
-    plan: free
     buildCommand: ./bin/render-build.sh
     startCommand: REDIS_URL="redis://${REDIS_HOST}" bundle exec sidekiq -e production
     envVars:
