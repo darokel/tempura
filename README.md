@@ -69,10 +69,13 @@ Go and build!
 
 ## Deploying
 
-Using import maps, it's best to deploy to a platform which supports serving assets via HTTP/2. This repo comes with a 1-click deployment option to Render:
+This repo comes with a 1-click deployment option to Render:
 
+<a href="https://render.com/deploy?repo=https://github.com/darokel/tempura">
+  <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+</a>
 
-There are also some scripts available to help with deploying to Render and setting up review apps. 
+There are also some scripts available to help with deploying to Render and setting up preview apps (Render's answer to Heroku review apps). 
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for more info on using the template with Render.
 
