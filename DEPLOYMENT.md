@@ -49,6 +49,6 @@ You can also configure preview environments to have [their own env var values](h
 
 #### Database Data
 
-To load db data into review apps, you can customise the [render preview script](https://github.com/darokel/tempura/blob/master/bin/render-preview.sh) which will run any custom initialization for your preview environment after it is created but not on subsequent deploys. This might be useful to load an annonymised copy of your production database for eg. It's configured in the [Render config](https://github.com/darokel/tempura/blob/master/render.yml#L13).
+To load db data into preview apps, you can customise the [render preview script](https://github.com/darokel/tempura/blob/master/bin/render-preview.sh) which will run any custom initialization for your preview environment after it is created but not on subsequent deploys. This might be useful to load an annonymised copy of your production database for eg. It's configured in the [Render config](https://github.com/darokel/tempura/blob/master/render.yml#L13).
 
 Alternatively, you can load any initial seed data the app itself may need in the [Render build script](https://github.com/darokel/tempura/blob/master/bin/render-build.sh).
