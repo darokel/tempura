@@ -32,6 +32,6 @@ RSpec.configure do |config|
   config.before(:each, type: :system, js: true) do
     Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
 
-    (ENV['RUN_HEADLESSLY'] || ENV["CIRCLECI"]) ? driven_by(:headless_selenium_chrome) : driven_by(:selenium_chrome)
+    ENV['RUN_HEADLESSLY'] ? driven_by(:headless_selenium_chrome) : driven_by(:selenium_chrome)
   end
 end
