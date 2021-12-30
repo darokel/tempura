@@ -29,11 +29,9 @@ RSpec.configure do |config|
     driven_by :rack_test
   end
 
-  config.before(:each, type: :system, js: true) do 
-    ENV['RUN_HEADLESSLY'] ? driven_by(:headless_selenium_chrome) : driven_by(:selenium_chrome)
+  config.before(:each, type: :system, js: true) do
+    Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
 
-    Capybara.server_host = IntegrationConfig::SERVER_HOST
-    Capybara.server_port = IntegrationConfig::SERVER_PORT
-    Capybara.app_host = IntegrationConfig::APP_HOST
+    (ENV['RUN_HEADLESSLY'] || ENV["CIRCLECI"]) ? driven_by(:headless_selenium_chrome) : driven_by(:selenium_chrome)
   end
 end

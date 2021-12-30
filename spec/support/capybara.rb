@@ -1,7 +1,5 @@
 require "selenium/webdriver"
 
-Capybara.server = :puma, { Silent: true }
-
 Capybara.register_driver :selenium_chrome do |app|
   config = IntegrationConfig.new
   Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: config.options)
@@ -16,8 +14,8 @@ def create_driver_for_remote_browser(app)
     app,
     browser: :remote,
     url: "http://localhost:4444/wd/hub",
-    desired_capabilities: Selenium::WebDriver::Remote::Capabilities.chrome(
-      chromeOptions: { args: %w[headless no-sandbox window-size=1400,900] }
+    capabilities: Selenium::WebDriver::Remote::Capabilities.chrome(
+      'goog:chromeOptions' => { args: %w[headless no-sandbox window-size=1400,900] }
     )
   )
 end
@@ -27,3 +25,7 @@ def create_driver_for_local_browser(app)
   config.enable_headless_mode!
   Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: config.options)
 end
+
+Capybara.server = :puma, { Silent: true }
+Capybara.server_host = "0.0.0.0"
+Capybara.server_port = "4000"

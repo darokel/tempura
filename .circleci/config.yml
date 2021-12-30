@@ -1,0 +1,133 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+
+defaults: &defaults
+  working_directory: ~/tempura
+
+references:
+  default_docker_ruby_executor: &default_docker_ruby_executor
+    image: circleci/ruby:3.0.2-node-browsers
+    environment:
+      BUNDLE_JOBS: 3
+      BUNDLE_RETRY: 3
+      BUNDLE_PATH: vendor/bundle
+      PGHOST: 127.0.0.1
+      PGUSER: postgres
+      PGPASSWORD: ""
+      RAILS_ENV: test
+      RACK_ENV: test
+      NODE_ENV: test
+  postgres: &postgres
+    image: cimg/postgres:14.0
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: tempura_test
+      POSTGRES_PASSWORD: ""
+  redis: &redis
+    image: circleci/redis:6.2.6-alpine
+
+jobs:
+  build:
+    <<: *defaults
+    docker:
+      - *default_docker_ruby_executor
+    steps:
+      - checkout
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      # Restore bundle cache if there's an existing one
+      - restore_cache:
+          keys:
+            - tempura-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - tempura-bundle-v2-
+      - run:
+          name: Bundle Install
+          command: |
+            bundle config set --local path vendor/bundle
+            bundle check || bundle install
+      # Store bundle cache if it's changed
+      - save_cache:
+          key: tempura-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      # Restore assets cache if there's an existing one
+      - restore_cache:
+          keys:
+            - assets-{{ .Branch }}-{{ .Revision }}
+            - assets-{{ .Branch }}
+            - assets
+      - run:
+          name: Precompile assets
+          command: bundle exec rails assets:precompile
+      # Store assets cache if it's changed
+      - save_cache:
+          key: assets-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - public/assets
+            - tmp/cache/assets
+            - tmp/cache/assets/sprockets
+      - run:
+          name: Bundle audit
+          command: bundle exec rake bundler:audit
+      - run:
+          name: Rubocop
+          command: bundle exec rake rubocop
+      - run:
+          name: i18n
+          command: bundle exec rake i18n
+  test:
+    <<: *defaults
+    docker:
+      - *default_docker_ruby_executor
+      - *postgres
+      - *redis
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - tempura-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - tempura-bundle-v2-
+      - run:
+          name: Bundle Install
+          command: bundle check --path=vendor/bundle || bundle install --path vendor/bundle
+      - restore_cache:
+          keys:
+            - assets-{{ .Branch }}-{{ .Revision }}
+            - assets-{{ .Branch }}
+            - assets
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: bundle exec rails db:schema:load --trace
+      # Run rspec in parallel
+      - run:
+          name: Run rspec tests
+          command: |
+            mkdir /tmp/test-results
+            TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            COVERAGE=true bundle exec rspec $TESTFILES --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
+      # Run yarn tests
+      - run: 
+          name: Run yarn tests
+          command: |
+            yarn run test:ci
+      # Collect reports      
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: coverage/backend
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
