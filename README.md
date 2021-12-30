@@ -11,6 +11,9 @@
   <a href="http://rubyonrails.org/">
     <img src="https://img.shields.io/badge/Rails-v7.0.0-brightgreen.svg" alt="rails version">
   </a>
+  <a href="https://circleci.com/gh/darokel/tempura">
+    <img src="https://circleci.com/gh/darokel/tempura.svg?style=svg" alt="circle ci badge">
+  </a>
   <img src="https://img.shields.io/github/languages/code-size/darokel/tempura" alt="GitHub code size in bytes">
 </p>
 

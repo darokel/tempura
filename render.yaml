@@ -4,6 +4,7 @@ previewsExpireAfterDays: 3
 databases:
   - name: tempura-db
     region: frankfurt
+    plan: starter
 
 services:
   - type: web
@@ -11,6 +12,7 @@ services:
     env: ruby
     initialDeployHook: ./bin/render-preview.sh
     region: frankfurt
+    plan: starter
     buildCommand: DB_MIGRATE=true ./bin/render-build.sh
     startCommand: REDIS_URL="redis://${REDIS_HOST}" bundle exec puma -C config/puma.rb
     envVars:
@@ -24,11 +26,11 @@ services:
           type: pserv
           property: hostport
       - fromGroup: app-settings
-
   - type: worker
     name: tempura-sidekiq
     env: ruby
     region: frankfurt
+    plan: starter
     buildCommand: ./bin/render-build.sh
     startCommand: REDIS_URL="redis://${REDIS_HOST}" bundle exec sidekiq -e production
     envVars:
@@ -42,38 +44,14 @@ services:
           type: pserv
           property: hostport
       - fromGroup: app-settings
-
   - type: pserv
     name: tempura-redis
     env: docker
     region: frankfurt
+    plan: starter
     repo: https://github.com/render-examples/redis.git
     numInstances: 1
     disk:
       name: tempura-redis-data
       mountPath: /var/lib/redis
       sizeGB: 1
-
-envVarGroups:
-  - name: app-settings
-    envVars:
-      - key: BASIC_AUTH_ENABLED
-        value: false
-      - key: RAILS_MASTER_KEY
-        sync: false
-      - key: RAILS_LOG_TO_STDOUT
-        value: true
-      - key: RAILS_SERVE_STATIC_ASSETS
-        value: true
-      - key: SMTP_ADDRESS
-        value: smtp.sendgrid.net
-      - key: SMTP_DOMAIN
-        sync: false
-      - key: SMTP_PASSWORD
-        value: password
-        previewValue: password
-      - key: SMTP_USERNAME
-        value: username
-        previewValue: username
-      - key: SECRET_KEY_BASE
-        generateValue: true
