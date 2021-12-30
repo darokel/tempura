@@ -112,11 +112,6 @@ jobs:
             mkdir /tmp/test-results
             TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
             COVERAGE=true bundle exec rspec $TESTFILES --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
-      # Run yarn tests
-      - run: 
-          name: Run yarn tests
-          command: |
-            yarn run test:ci
       # Collect reports      
       - store_test_results:
           path: /tmp/test-results
