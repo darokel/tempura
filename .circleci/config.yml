@@ -122,15 +122,15 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Deploy web service
-        command: curl -s "https://api.render.com/deploy/srv-c754ujh0gd076j2qhbqg?key=$RENDER_WEB_SERVICE_KEY"
+          name: Deploy web service
+          command: curl -s "https://api.render.com/deploy/srv-c754ujh0gd076j2qhbqg?key=$RENDER_WEB_SERVICE_KEY"
   deploy_worker:
     <<: *defaults
     steps:
       - checkout
       - run:
-        name: Deploy worker service
-        command: curl -s "https://api.render.com/deploy/srv-c7556l10gd076j2qhgsg?key=$RENDER_WORKER_SERVICE_KEY"
+          name: Deploy worker service
+          command: curl -s "https://api.render.com/deploy/srv-c7556l10gd076j2qhgsg?key=$RENDER_WORKER_SERVICE_KEY"
 
 workflows:
   version: 2
