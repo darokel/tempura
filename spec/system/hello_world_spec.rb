@@ -5,6 +5,6 @@ require 'rails_helper'
 RSpec.describe 'HelloWorld' do
   it 'renders greeting from JavaScript', js: true do
     visit '/'
-    expect(page).to have_text('Itadakimasu! 🍱')
+    expect(page).not_to have_text('Itadakimasu! 🍱')
   end
 end
