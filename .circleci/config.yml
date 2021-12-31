@@ -117,6 +117,18 @@ jobs:
           path: /tmp/test-results
       - store_artifacts:
           path: coverage/backend
+  deploy:
+    <<: *defaults
+    docker:
+      - *default_docker_ruby_executor
+    steps:
+      - checkout
+      - run:
+          name: Deploy web service
+          command: curl -s "https://api.render.com/deploy/srv-c754ujh0gd076j2qhbqg?key=$RENDER_WEB_SERVICE_KEY"
+      - run:
+          name: Deploy worker service
+          command: curl -s "https://api.render.com/deploy/srv-c7556l10gd076j2qhgsg?key=$RENDER_WORKER_SERVICE_KEY"
 
 workflows:
   version: 2
@@ -126,3 +138,9 @@ workflows:
       - test:
           requires:
             - build
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: main
