@@ -117,6 +117,20 @@ jobs:
           path: /tmp/test-results
       - store_artifacts:
           path: coverage/backend
+  deploy_web:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+        name: Deploy web service
+        command: curl -s "https://api.render.com/deploy/srv-c754ujh0gd076j2qhbqg?key=$RENDER_WEB_SERVICE_KEY"
+  deploy_worker:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+        name: Deploy worker service
+        command: curl -s "https://api.render.com/deploy/srv-c7556l10gd076j2qhgsg?key=$RENDER_WORKER_SERVICE_KEY"
 
 workflows:
   version: 2
@@ -126,3 +140,15 @@ workflows:
       - test:
           requires:
             - build
+      - deploy_web:
+          requires:
+            - test
+          filters:
+            branches:
+              only: main
+      - deploy_worker:
+          requires:
+            - deploy_web
+          filters:
+            branches:
+              only: main

@@ -47,9 +47,13 @@ Render will start configuring all the services and deploy the app. A new deploy 
 
 #### Continous integration and deployment
 
-This template is configured to run CI checks with Github actions on PRs and merges to the `main` branch.
+This template is configured to run CI checks with CircleCI on PRs and merges to the `main` branch.
 
-By default, Render will deploy your app on every merge to the `main` branch. You can disable this in the Render dashboard and programotically call your app's deploy hook from a custom script if you'd like to wait for CI checks on `main`. There is an example [deploy script](https://github.com/darokel/tempura/blob/main/bin/deploy.sh) included in the template and a Github workflow on using it.
+By default, Render will deploy your app on every merge to the `main` branch. You can disable this in the Render dashboard and programatically call your app's deploy hook from a custom script if you'd like to wait for CI checks on `main`. There is an example of how to do this in the [circleci workflow](https://github.com/darokel/tempura/blob/main/.circleci/config.yml).
+
+#### Security checks
+
+This template is configured to run security checks with [Snyk](https://snyk.io/). When you fork the template, you'll have to add your repo to snyk if you still want the monitoring.
 #### Preview Apps
 
 This repo is configured to enable PR previews with Render's [preview environments](https://render.com/docs/preview-environments). PRs will automatically create a high fidelity copy of your entire production environment (including databases).
