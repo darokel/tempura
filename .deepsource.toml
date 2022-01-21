@@ -5,12 +5,6 @@ test_patterns = ["spec/**"]
 exclude_patterns = [
   "**/Rakefile",
   "db/**/*",
-  "bin/**/*",
-  "config/initializers/**/*",
-  "tmp/**/*",
-  "vendor/bundle/**/*",
-  "config/application.rb",
-  "config/environments/**/*",
   "spec/**/*",
   "node_modules/**/*"
 ]
