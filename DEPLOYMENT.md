@@ -6,7 +6,6 @@ Tempura is pre-configured to enable easy deployments to [Render](https://render.
 
 There's a pre-configured [render blueprint](https://github.com/darokel/tempura/blob/main/render.yaml) which will setup all the required services to run this app. You'll need to sign up for a Render account to deploy the template.
 
-
 ### Set up environment Vars
 
 Before you deploy to Render you'll need to decide how some environment variables are set in the [Render config](https://github.com/darokel/tempura/blob/main/render.yaml). You can configure env vars to have different values per service or configure some services to share from the same group.
@@ -32,7 +31,7 @@ The following env vars can be set per service as you may want them to have diffe
 # Optional - You may want to serve assets from a different server like cloudfront, set this to the URL of your CDN. Defaults to the url of the Render instance
 ASSET_HOST # eg "https://assets.example.com"
 
-# Optional - if you have a custom domain name for your app, set this to the domain name. Defaults to the url of the Render instance 
+# Optional - if you have a custom domain name for your app, set this to the domain name. Defaults to the url of the Render instance
 APPLICATION_HOST # eg "https://example.com"
 
 # In production, you may want to configure a different Redis instance for the Rails cache. Defaults to the same Redis instance configured in the template
@@ -54,6 +53,7 @@ By default, Render will deploy your app on every merge to the `main` branch. You
 #### Security checks
 
 This template is configured to run security checks with [Snyk](https://snyk.io/). When you fork the template, you'll have to add your repo to snyk if you still want the monitoring.
+
 #### Preview Apps
 
 This repo is configured to enable PR previews with Render's [preview environments](https://render.com/docs/preview-environments). PRs will automatically create a high fidelity copy of your entire production environment (including databases).
