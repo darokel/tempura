@@ -10,6 +10,10 @@ exclude_patterns = [
 ]
 
 [[analyzers]]
+name = "test-coverage"
+enabled = true
+
+[[analyzers]]
 name = "ruby"
 enabled = true
 
