@@ -107,11 +107,13 @@ jobs:
           command: bundle exec rails db:schema:load --trace
       # Run rspec in parallel
       - run:
-          name: Run rspec tests
+          name: Run rspec tests and report coverage
           command: |
+            curl https://deepsource.io/cli | sh
             mkdir /tmp/test-results
             TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
             COVERAGE=true bundle exec rspec $TESTFILES --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
+            ./bin/deepsource report --analyzer test-coverage --key ruby --value-file coverage/backend/.resultset.json
       # Collect reports      
       - store_test_results:
           path: /tmp/test-results
