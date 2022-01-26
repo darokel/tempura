@@ -38,10 +38,8 @@ group :development, :test do
   gem 'bundler-audit', require: false
   gem 'dotenv-rails', '~> 2.7.6'
   gem 'factory_bot_rails', '~> 6.2.0'
-  gem 'i18n-tasks', '~> 0.9.36'
+  gem 'i18n-tasks', '~> 0.9.37'
   gem 'pry-rails'
-  # rails-i18n added here as a temp fix until https://github.com/svenfuchs/rails-i18n/pull/957 is merged
-  gem 'rails-i18n', git: 'https://github.com/f6p/rails-i18n.git', branch: 'rails7-hotfix'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails', '~> 5.0.2'
   gem 'rubocop'
