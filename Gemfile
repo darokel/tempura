@@ -6,7 +6,7 @@ git_source(:github) { |_repo| "https://github.com/#{repo}.git" }
 ruby '3.1.0'
 
 gem 'bootsnap', require: false
-gem 'image_processing', '~> 1.2'
+gem 'image_processing', '~> 1.12'
 gem 'importmap-rails'
 gem 'inline_svg', '~> 1.7.2'
 gem 'jbuilder'
